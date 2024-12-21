@@ -6,8 +6,8 @@ import time
 auto_temp = 28  # reference Temperature value
 auto_light = 750  # reference Light value
 auto_humi = 60   # reference Humidity value
-BLYNK_AUTH = 'n0p7uTSl6t0pTJMyCxdGcPgPojbxZQiJ'
-SSID = 'Hanbat_WLAN_Guest'
+BLYNK_AUTH = '고유 토큰 입력'
+SSID = '와이파이 이름 입력'
 PASSWORD = ''
 
 auto_mode = False
@@ -27,7 +27,7 @@ textlcd = Textlcd()
 wlan = WLAN(mode=WLAN.STA)
 wlan.connect(SSID, auth=(WLAN.WPA2, PASSWORD))
 while not wlan.isconnected():
-    print('x')  # 원래는 print(x)가아니라 time.sleep(1)
+    print('x')  # 원래는 print(x)가아니라 time.sleep(1), 연결 여부를 위한 코드 수정
 
 # Blynk 연결 설정
 blynk = BlynkLib.Blynk(BLYNK_AUTH)
@@ -94,7 +94,7 @@ def Fan_Callback(value):
         else:
             fan.off()
 
-@blynk.on("V10")
+@blynk.on("V9")
 def Window_Callback(value):
     if not auto_mode:
         if value[0] == '1':
@@ -125,7 +125,7 @@ while switch_up.read() or switch_down.read():
         blynk.virtual_write(0, "\nHumidity             :   " + str(humidity_value) + "%")
 
     if auto_mode:
-        # 자동 모드 제어 - 온도 조건
+        # 자동 모드 제어 - 온도 조건/ 필요한 환경에 따라 수정
         if temp_value > auto_temp:
             fan.on()
             window.open()
